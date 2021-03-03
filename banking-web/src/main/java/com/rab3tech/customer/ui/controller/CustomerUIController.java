@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.CustomerTransactionService;
@@ -87,7 +88,44 @@ public class CustomerUIController {
 	@Autowired
    private CustomerTransactionService customerTransactionService;
 	
+	///added by KG
+	//
+	//
 	
+	@PostMapping("/customer/profile/photo")
+	public String changeCustomerPhoto(@RequestParam int cid,@RequestParam("pppppphoto") MultipartFile photo) throws IOException {
+		byte[] bphoto=photo.getBytes();
+		customerService.updatePhoto(cid, bphoto);
+		return "redirect:/customer/profile";// I will refresh your page
+	}
+
+	@GetMapping("/customer/profile/photo")
+	public void findCustomerPhoto(@RequestParam int cid,HttpServletResponse response) throws IOException {
+	   byte[] photo=customerService.findPhotoByid(cid);
+	   response.setContentType("image/png");
+	   ServletOutputStream outputStream=response.getOutputStream();
+	   if(photo!=null) {
+		   outputStream.write(photo);
+	   }else {
+		   outputStream.write(new byte[] {});
+	   }
+	   outputStream.flush();
+	   outputStream.close();
+	}
+
+	@GetMapping("/customer/profile")
+	public String showProfile(Model model,HttpSession session){
+		LoginVO  loginVO2=(LoginVO)session.getAttribute("userSessionVO");
+		//userid,username,loginid,emailid
+		String currentLoggedInUserName=loginVO2.getUsername();
+		CustomerVO customerVO=customerService.findCustomerByUsername(currentLoggedInUserName);
+		model.addAttribute("customerVO", customerVO);
+		return "/customer/profile";//profile.html
+	}
+	
+	///added ky kg
+	///
+	//
 	
 	
 	@GetMapping("/customer/sendAccountStmt")

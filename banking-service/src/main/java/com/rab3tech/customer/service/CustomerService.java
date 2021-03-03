@@ -55,6 +55,13 @@ public interface CustomerService {
 
 	void deleteCustomer(String userid);
 
+	/**
+	 * code to upload the image
+	 */
+	void updatePhoto(int cid, byte[] photo);
+
+	CustomerVO findCustomerByUsername(String username);
+
 	
 
 }

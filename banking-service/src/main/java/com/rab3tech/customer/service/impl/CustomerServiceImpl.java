@@ -257,6 +257,24 @@ public class CustomerServiceImpl implements CustomerService {
 		
 	}
 	
+	///
+	///
+	//added by kg
+	/**
+	 * code to upload the image
+	 */
+	@Override
+	public void updatePhoto(int cid,byte[] photo) {
+		Optional<Customer> optionalCustomer=customerRepository.findById(cid);
+		if(optionalCustomer.isPresent()) {
+			Customer customer=optionalCustomer.get();
+			customer.setImage(photo);
+		}
+	}
+	
+/////kg
+///
+	
 	
 	@Override
 	public byte[] findPhotoByid(int cid) {
@@ -307,6 +325,33 @@ public class CustomerServiceImpl implements CustomerService {
 	   
 	   return result;
    }
+   
+   
+   ///KG
+   ///
+   ///
+@Override
+   public CustomerVO findCustomerByUsername(String username){
+	   Optional<Customer> customer =CustomerRepository.findByEmail(username);
+	   CustomerVO customerVO = null;
+	   if(customer.isPresent()) {
+		   customerVO = new CustomerVO();
+		   Customer customerEntity=customer.get();
+		   customerVO.setId(customerEntity.getId());
+		   customerVO.setName(customerEntity.getName().trim());
+		   customerVO.setEmail(customerEntity.getEmail());
+		   customerVO.setUserid(customerEntity.getEmail());
+		   customerVO.setAddress(customerEntity.getAddress());
+		   customerVO.setMobile(customerEntity.getMobile());
+		   customerVO.setJobTitle(customerEntity.getJobTitle());
+	   }
+	   return customerVO;
+   }
+   
+   ///KG
+   ///
+   //
+   
    
    @Override
    public  CustomerVO searchCustomer(String searchKey){

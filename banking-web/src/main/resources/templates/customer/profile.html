@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Customer Dashboard Page</title>
+  <title>Customer Profile</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -53,15 +53,51 @@
 <button type="button" class="btn btn-danger">Account Summary</button>
 </a>
 
+
 <a th:href="@{/customer/profile}">
-<button type="button" class="btn btn-danger">Profile</button>
+<button type="button" class="btn btn-primary">Profile</button>
 </a>
+
 
  <a th:href="@{/customer/logout}"><button type="button" class="btn btn-warning">Logout</button></a>
  <br/>
-  <img th:src="@{/images/customer_dashboard.jpg}" alt="page"/>
+  <img th:src="@{/images/customer-en.png}" alt="page" style="height: 100px;"/>
    <span th:utext="${error}" style="color: red;font-size: 18px;"></span>
   <div style="width: 70%">
+      <p>Customer Details:</p>  
+      
+  <form th:action="@{/customer/profile/photo}" method="POST"  enctype="multipart/form-data">
+    <input type="hidden" name="cid" th:value="${customerVO.id}">           
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <td>Name</td>
+       <td th:text="${customerVO.name}"/>
+      </tr>
+      <tr>
+        <td>Email</td>
+       <td th:text="${customerVO.email}"/>
+      </tr>
+      <tr>
+        <td>User Name : </td>
+         <td th:text="${customerVO.userid}"/>
+      </tr>
+       <tr>
+        <td>Job Title : </td>
+         <td th:text="${customerVO.jobTitle}"/>
+      </tr>
+       <tr>
+        <td>Photo : </td>
+         <td>
+         <img th:src="@{'/customer/profile/photo?cid=' + ${customerVO.id}}" style="height: 120px;"/>
+          <input type="file" name="pppppphoto"/>
+         </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+  <hr/>
   </div>
 </div>
 <footer  class="ffooter">
